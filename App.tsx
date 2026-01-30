@@ -8,15 +8,16 @@ import {
 import { TeamMember, RiskFactor, ReportContent } from './types';
 import ReportPage from './components/ReportPage';
 
-// DEFINICIÓN DE RUTAS: No usamos 'import' para imágenes porque el navegador no las reconoce como módulos.
-// Usamos rutas relativas directas que coinciden con la ubicación de tus archivos en la raíz.
-const imgGrupo = './grupo.jpeg';
-const img1 = './1.jpeg';
-const img2 = './2.jpeg';
-const img3 = './3.jpeg';
-const img4 = './4.jpeg';
-const img5 = './5.jpeg';
-const img6 = './6.jpeg';
+// DEFINICIÓN DE RUTAS COMO TEXTO: 
+// No usamos 'import' para imágenes porque el navegador daría error de módulo.
+// Usamos el nombre del archivo directamente ya que están en la misma carpeta raíz.
+const imgGrupo = 'grupo.jpeg';
+const img1 = '1.jpeg';
+const img2 = '2.jpeg';
+const img3 = '3.jpeg';
+const img4 = '4.jpeg';
+const img5 = '5.jpeg';
+const img6 = '6.jpeg';
 
 const teamMembers: TeamMember[] = [
   { name: 'Briant Alexis', number: '#23' },
