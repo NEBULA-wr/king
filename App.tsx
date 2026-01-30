@@ -11,12 +11,12 @@ import ReportPage from './components/ReportPage';
 
 // Definición de rutas como constantes de cadena para evitar errores de importación de módulos en el navegador
 const imgGrupo = './grupo.jpeg';
-const img1 = './1.jpeg';
-const img2 = './2.jpeg';
-const img3 = './3.jpeg';
-const img4 = './4.jpeg';
-const img5 = './5.jpeg';
-const img6 = './6.jpeg';
+const img1 = '1.jpeg';
+const img2 = '2.jpeg';
+const img3 = '3.jpeg';
+const img4 = '4.jpeg';
+const img5 = '5.jpeg';
+const img6 = '6.jpeg';
 
 const teamMembers: TeamMember[] = [
   { name: 'Briant Alexis', number: '#23' },
