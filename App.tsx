@@ -8,16 +8,15 @@ import {
 import { TeamMember, RiskFactor, ReportContent } from './types';
 import ReportPage from './components/ReportPage';
 
-// DEFINICIÓN DE RUTAS COMO TEXTO: 
-// No usamos 'import' para imágenes porque el navegador daría error de módulo.
-// Usamos el nombre del archivo directamente ya que están en la misma carpeta raíz.
-const imgGrupo = 'grupo.jpeg';
-const img1 = '1.jpeg';
-const img2 = '2.jpeg';
-const img3 = '3.jpeg';
-const img4 = '4.jpeg';
-const img5 = '5.jpeg';
-const img6 = '6.jpeg';
+// USAMOS EL CONSTRUCTOR URL: Es la forma más profesional de manejar assets en ESM.
+// Esto garantiza que Vite incluya las imágenes en el build de Netlify sin errores de "module specifier".
+const imgGrupo = new URL('./grupo.jpeg', import.meta.url).href;
+const img1 = new URL('./1.jpeg', import.meta.url).href;
+const img2 = new URL('./2.jpeg', import.meta.url).href;
+const img3 = new URL('./3.jpeg', import.meta.url).href;
+const img4 = new URL('./4.jpeg', import.meta.url).href;
+const img5 = new URL('./5.jpeg', import.meta.url).href;
+const img6 = new URL('./6.jpeg', import.meta.url).href;
 
 const teamMembers: TeamMember[] = [
   { name: 'Briant Alexis', number: '#23' },
