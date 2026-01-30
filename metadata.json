@@ -1,0 +1,5 @@
+{
+  "name": "Sistema de Evaluación de Riesgos Laborales",
+  "description": "Una aplicación web elegante para documentar y exportar informes técnicos de riesgos laborales, específicamente diseñada para centros de trabajo técnicos con exportación formal a PDF.",
+  "requestFramePermissions": []
+}
