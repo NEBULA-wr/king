@@ -1,15 +1,15 @@
 
 import React, { useState, useCallback } from 'react';
 import { 
-  FileDown, ShieldAlert, BookOpen, FileText, 
+  FileDown, ShieldAlert, FileText, 
   CheckCircle, Target, AlertTriangle, 
-  ShieldCheck, Zap, X, Search, Maximize2,
-  Hammer, Layout
+  ShieldCheck, Zap, X, Hammer, Layout
 } from 'lucide-react';
 import { TeamMember, RiskFactor, ReportContent } from './types';
 import ReportPage from './components/ReportPage';
 
-// Definición de rutas como constantes de cadena para evitar errores de importación de módulos en el navegador
+// DEFINICIÓN DE RUTAS: No usamos 'import' para imágenes porque el navegador no las reconoce como módulos.
+// Usamos rutas relativas directas que coinciden con la ubicación de tus archivos en la raíz.
 const imgGrupo = './grupo.jpeg';
 const img1 = './1.jpeg';
 const img2 = './2.jpeg';
