@@ -2,15 +2,8 @@
 import React from 'react';
 import { TeamMember, RiskFactor, ReportContent } from '../types';
 import { 
-  ShieldCheck, 
-  ListOrdered, 
-  FileText, 
-  CheckCircle2, 
-  AlertTriangle,
-  Hammer,
-  Building2,
-  Award,
-  ShieldAlert
+  ShieldAlert, Target, AlertTriangle, 
+  ShieldCheck, Zap, FileText, CheckCircle, MapPin
 } from 'lucide-react';
 
 interface ReportPageProps {
@@ -20,43 +13,34 @@ interface ReportPageProps {
   groupPhoto: string | null;
 }
 
-const ReportPage: React.FC<ReportPageProps> = ({ teamMembers, riskFactors, content, groupPhoto }) => {
-  // Firmas simuladas basadas en los nombres
-  const signatures: Record<string, string> = {
-    'Briant Alexis': 'B. Alexis 23',
-    'Nikaury Reyes': 'N. Reyes 17',
-    'Yinariry Moreno': 'Y. Moreno 14'
-  };
+const MAP_URL = "https://www.google.com/maps/@18.4927594,-69.8812202,3a,48.9y,158.95h,76.25t/data=!3m7!1e1!3m5!1sy5S4Db_rCgYyBwqpEY4fDw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D13.75232403087486%26panoid%3Dy5S4Db_rCgYyBwqpEY4fDw%26yaw%3D158.95060394791741!7i13312!8i6656";
 
+const ReportPage: React.FC<ReportPageProps> = ({ teamMembers, riskFactors, content, groupPhoto }) => {
   return (
-    <div className="report-wrapper bg-white">
+    <div className="report-wrapper bg-white shadow-xl mx-auto">
       <style>{`
         @import url('https://fonts.cdnfonts.com/css/tahoma');
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
 
+        /* CONFIGURACIÓN GLOBAL: TAHOMA 12PT */
         .report-wrapper {
           font-family: 'Tahoma', sans-serif !important;
           color: #000;
           background: #fff;
+          font-size: 12pt;
         }
 
         .page-container {
           width: 8.5in;
-          height: 10.96in;
-          padding: 0.6in 0.85in;
+          height: 11in;
+          padding: 0.8in 1in;
           box-sizing: border-box;
           position: relative;
           display: flex;
           flex-direction: column;
           background: white;
-          overflow: hidden;
           page-break-after: always;
-        }
-
-        .bold-title {
-          font-weight: bold !important;
-          text-transform: uppercase;
-          line-height: 1.2;
+          overflow: hidden;
         }
 
         .text-body {
@@ -64,321 +48,429 @@ const ReportPage: React.FC<ReportPageProps> = ({ teamMembers, riskFactors, conte
           line-height: 1.5 !important;
           text-align: justify;
           font-weight: normal;
-          margin: 0;
+          margin-bottom: 1rem;
+          color: #000;
         }
 
-        .section-header {
-          border-bottom: 2px solid #b91c1c; 
-          padding-bottom: 4px;
-          margin-bottom: 18px;
+        .bold-title {
+          font-weight: bold !important;
+        }
+
+        /* Portada */
+        .creative-cover {
+          height: 100%;
+          border: 1px solid #e5e7eb;
+          padding: 0.6in;
           display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .finding-image-container {
-          width: 100%;
-          border: 1.2px solid #000;
-          margin-bottom: 15px;
-          padding: 3px;
-          background: #fff;
-        }
-
-        .finding-image {
-          width: 100%;
-          height: 3.4in;
-          object-fit: cover;
-          filter: grayscale(100%);
-        }
-
-        .header-logo-box {
-          display: flex;
+          flex-direction: column;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 15px;
-          border-bottom: 1px solid #000;
-          padding-bottom: 8px;
-        }
-
-        .footer-info {
-          margin-top: auto;
-          font-size: 8.5pt;
-          border-top: 1px solid #000;
-          padding-top: 6px;
-          display: flex;
-          justify-content: space-between;
-          text-transform: uppercase;
-          font-weight: bold;
-        }
-
-        .signature-line {
-          border-top: 1px solid #000;
-          margin-top: 15px;
-          padding-top: 4px;
           text-align: center;
-          font-size: 8.5pt;
+          background: #fff;
           position: relative;
+        }
+
+        .cover-top-border {
+          width: 100%;
+          height: 14px;
+          background: linear-gradient(90deg, #1e3a8a 0%, #dc2626 100%);
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+
+        .cover-photo-frame {
+          width: 100%;
+          height: 3.5in;
+          padding: 4px;
+          background: white;
+          border: 1px solid #e5e7eb;
+          box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+          margin: 1rem 0;
+        }
+
+        .cover-photo-frame img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        /* Secciones */
+        .section-title {
+          font-weight: bold;
+          font-size: 14pt;
+          text-transform: uppercase;
+          margin-top: 1rem;
+          margin-bottom: 0.8rem;
+          border-bottom: 2px solid #b91c1c;
+          padding-bottom: 5px;
+          color: #b91c1c;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .finding-image-box {
+          width: 100%;
+          height: 4in;
+          border: 1px solid #f1f5f9;
+          margin-bottom: 1.2rem;
+          overflow: hidden;
+          background: #f8fafc;
+        }
+
+        .finding-image-box img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .student-table {
+          margin: 1rem auto;
+          width: 90%;
+          text-align: left;
+          border-collapse: collapse;
+          font-size: 12pt;
+        }
+
+        .student-table th {
+          font-weight: bold;
+          padding: 8px;
+          border-bottom: 2px solid #000;
+        }
+
+        .student-table td {
+          padding: 6px 8px;
+        }
+
+        /* ÁREA DE FIRMAS */
+        .signature-area {
+          margin-top: auto;
+          padding-top: 1.5rem;
+          width: 100%;
+        }
+
+        .signature-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+          align-items: end;
+        }
+
+        .signature-block {
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          min-width: 0;
         }
 
         .handwritten-signature {
           font-family: 'Dancing Script', cursive;
           font-size: 18pt;
-          color: #1e3a8a; /* Azul tinta */
-          position: absolute;
-          top: -35px;
-          left: 50%;
-          transform: translateX(-50%) rotate(-3deg);
+          color: #1e293b;
+          height: 50px;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          margin-bottom: 0;
+          width: 100%;
+          overflow: hidden;
           white-space: nowrap;
         }
 
-        .conformity-stamp {
-          border: 3px double #b91c1c;
-          border-radius: 50%;
-          width: 120px;
-          height: 120px;
+        .signature-line {
+          width: 100%;
+          border-top: 1.5px solid #000;
+          margin-top: 0;
+          margin-bottom: 8px;
+        }
+
+        .signature-name {
+          font-weight: bold;
+          font-size: 10pt;
+          text-transform: uppercase;
+          line-height: 1.2;
+          margin-bottom: 2px;
+        }
+
+        .signature-id {
+          font-size: 9pt;
+          margin-bottom: 2px;
+        }
+
+        .signature-role {
+          font-size: 8pt;
+          color: #475569;
+          text-transform: uppercase;
+          font-weight: bold;
+        }
+
+        .map-container {
+          width: 100%;
+          height: 2.2in;
+          background: #f1f5f9;
+          border: 1px solid #e2e8f0;
+          margin-top: 0.8rem;
           display: flex;
-          flex-direction: column;
           align-items: center;
           justify-content: center;
+          position: relative;
+          overflow: hidden;
+          cursor: pointer;
+        }
+
+        .map-link {
+          text-decoration: none;
+          color: inherit;
+        }
+
+        .map-link:hover strong {
           color: #b91c1c;
-          font-weight: bold;
-          font-size: 8pt;
-          text-align: center;
-          transform: rotate(-15deg);
-          opacity: 0.8;
-          padding: 10px;
-          position: absolute;
-          bottom: 150px;
-          right: 80px;
         }
 
         @media print {
           .page-container {
+            margin: 0;
             border: none;
             box-shadow: none;
+            page-break-after: always;
+          }
+          .report-wrapper {
+            background: white !important;
+            box-shadow: none !important;
+          }
+          a {
+              text-decoration: none !important;
+              color: black !important;
           }
         }
       `}</style>
 
       {/* PÁGINA 1: PORTADA */}
       <div className="page-container">
-        <div className="header-logo-box">
-          <div className="flex flex-col">
-            <span className="bold-title text-[12pt]">Politécnico Hermana Rosario Torres</span>
-            <span className="bold-title text-[9pt] text-red-700">Fe y Alegría Dominicana</span>
-          </div>
-          <img 
-            src="https://yt3.googleusercontent.com/WS0ba58el0tmoVeTMMh5mJfcjwDbbsmg_6n1a084UivG7sDjKePiNhedMYJ8FQjP4LLGujQHhg=s900-c-k-c0x00ffffff-no-rj" 
-            alt="Logo" 
-            className="w-14 h-14 object-contain"
-          />
-        </div>
-
-        <div className="text-center flex-grow flex flex-col justify-center">
-          <div className="mb-8">
-            <span className="bold-title text-[20pt] block mb-2">INFORME TÉCNICO PROFESIONAL</span>
-            <span className="bold-title text-[14pt] border-y-2 border-black py-4 block">
-              IDENTIFICACIÓN DE FACTORES DE RIESGO LABORAL
-            </span>
+        <div className="creative-cover">
+          <div className="cover-top-border"></div>
+          
+          <div className="mt-4">
+            <h1 className="bold-title text-[26pt] text-slate-900 tracking-tighter leading-tight">INFORME TÉCNICO PROFESIONAL</h1>
+            <p className="text-[12pt] text-indigo-800 font-bold uppercase tracking-[0.3em] mt-2 border-b-2 border-slate-100 inline-block pb-1">Seguridad e Higiene Industrial</p>
           </div>
 
-          <div className="finding-image-container">
+          <div className="cover-photo-frame">
             {groupPhoto ? (
-              <img src={groupPhoto} className="w-full h-[4in] object-cover grayscale" alt="Equipo" />
+              <img src={groupPhoto} alt="Personal Auditor" />
             ) : (
-              <div className="h-[4in] bg-gray-100 flex items-center justify-center font-bold text-gray-300">REGISTRO FOTOGRÁFICO</div>
+              <div className="w-full h-full bg-slate-50 flex items-center justify-center text-slate-300 italic">Evidencia del Equipo Auditor</div>
             )}
           </div>
 
-          <div className="mt-6 space-y-2 max-w-sm mx-auto text-left">
-             <span className="bold-title text-[11pt] underline block mb-2">Sustentado por:</span>
-             {teamMembers.map(m => (
-               <div key={m.number} className="flex justify-between border-b border-gray-100 text-body">
-                 <span>{m.name}</span>
-                 <span className="bold-title">{m.number}</span>
-               </div>
-             ))}
-          </div>
-        </div>
-
-        <div className="text-center mt-6">
-          <span className="bold-title text-[9pt]">SANTO DOMINGO, REPÚBLICA DOMINICANA | 2026</span>
-        </div>
-      </div>
-
-      {/* PÁGINA 2: PRESENTACIÓN */}
-      <div className="page-container">
-        <div className="header-logo-box">
-          <span className="bold-title text-[8pt]">Gestión de Riesgos Laborales</span>
-          <span className="bold-title text-[8pt]">Folio 02</span>
-        </div>
-        
-        <div className="section-header">
-          <Building2 size={18} className="text-red-700" />
-          <span className="bold-title text-[12pt]">I. Presentación del Proyecto</span>
-        </div>
-        
-        <div className="space-y-8 mt-4 flex-grow">
-          {[
-            { l: "Centro Educativo", v: "Politécnico Hermana Rosario Torres" },
-            { l: "Red de Centros", v: "Fe y Alegría Dominicana" },
-            { l: "Asignatura", v: "Higiene y Seguridad Industrial" },
-            { l: "Módulo Técnico", v: "Salud Ocupacional en el Entorno Laboral" },
-            { l: "Nivel Académico", v: "Quinto Grado de Secundaria (5to)" },
-            { l: "Entorno de Estudio", v: "Laboratorios de Informática y Electrónica" }
-          ].map((item, i) => (
-            <div key={i} className="flex border-b border-gray-200 pb-1">
-              <span className="bold-title w-64 text-[11pt]">{item.l}:</span>
-              <span className="text-body flex-grow italic">{item.v}</span>
+          <div className="space-y-3">
+            <h2 className="bold-title text-[20pt] text-red-700 uppercase">Seguridad Y Salud En El Trabajo</h2>
+            <div className="flex items-center justify-center gap-4">
+              <div className="h-[1px] w-12 bg-slate-300"></div>
+              <p className="text-[12pt] font-bold text-slate-800 uppercase tracking-widest">Politécnico Rosario Torres</p>
+              <div className="h-[1px] w-12 bg-slate-300"></div>
             </div>
-          ))}
+          </div>
 
-          <div className="mt-10 p-8 border-2 border-black bg-gray-50">
-            <span className="bold-title text-[11pt] block mb-4 underline">Objetivo de la Inspección:</span>
-            <p className="text-body">
-              Realizar un levantamiento técnico exhaustivo de las condiciones de trabajo, analizando riesgos potenciales que afecten la salud y seguridad de los operarios. Este documento sirve como guía para la implementación de medidas preventivas urgentes.
-            </p>
+          <div className="w-full flex justify-between items-end border-t border-slate-100 pt-6 mb-2">
+            <div className="text-left">
+              <p className="text-[9pt] font-black text-slate-400 uppercase tracking-widest">Especialidad Académica:</p>
+              <p className="text-[12pt] font-bold text-slate-950">Desarrollo de Aplicaciones</p>
+            </div>
+            <div className="text-right">
+              <p className="text-[12pt] font-black uppercase tracking-widest text-indigo-900">5to Año - A</p>
+              <p className="text-[9pt] font-bold text-slate-500">Santo Domingo, D.N.</p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* PÁGINA 3: ÍNDICE */}
+      {/* PÁGINA 2: PRESENTACIÓN FORMAL */}
       <div className="page-container">
-        <div className="section-header">
-          <ListOrdered size={18} className="text-red-700" />
-          <span className="bold-title text-[12pt]">II. Índice General</span>
-        </div>
+        <div className="flex flex-col h-full text-center">
+          <div className="space-y-1 mb-10">
+            <div className="bold-title text-[14pt]">Politécnico Hermana Rosario Torres Fe y Alegría</div>
+            <div className="text-[12pt]">Especialidad en Desarrollo de Aplicaciones e Informática</div>
+          </div>
 
-        <div className="space-y-7 mt-5">
-          {[
-            { t: "1. Portada y Registro de Equipo", p: "01" },
-            { t: "2. Presentación y Objetivos del Peritaje", p: "02" },
-            { t: "3. Índice de Materias", p: "03" },
-            { t: "4. Introducción y Marco Teórico", p: "04" },
-            { t: "5. Desarrollo de la Auditoría Visual", p: "04" },
-            { t: "6. Análisis de Hallazgos (Factores 1 al 6)", p: "05-10" },
-            { t: "7. Conclusiones y Propuestas Técnicas", p: "11" },
-            { t: "8. Firmas de Validación", p: "11" }
-          ].map((item, i) => (
-            <div key={i} className="flex justify-between items-center border-b border-gray-300 pb-1">
-              <span className="text-body uppercase">{item.t}</span>
-              <div className="flex-grow border-b border-dotted border-gray-400 mx-2 h-4"></div>
-              <span className="bold-title text-red-700">{item.p}</span>
+          <div className="flex-grow flex flex-col justify-center space-y-8">
+            <div>
+              <div className="bold-title text-[16pt] uppercase mb-1">Seguridad Y Salud En El Trabajo</div>
+              <div className="text-[12pt] font-bold">Grado 5to, Sección A</div>
             </div>
-          ))}
+
+            <div className="w-48 h-[1px] bg-black mx-auto"></div>
+
+            <div className="text-[12pt]">
+              <span className="font-bold">Maestro:</span> Edgar King
+            </div>
+
+            <div className="text-[12pt] px-10">
+              <span className="bold-title uppercase block mb-2">Proyecto Académico:</span>
+              <span className="leading-relaxed">Identificación de Peligros y Medidas de Prevención en Centros de Cómputo.</span>
+            </div>
+          </div>
+
+          <table className="student-table">
+            <thead>
+              <tr>
+                <th className="text-left">Nombres y Apellidos:</th>
+                <th className="text-right">Matrícula:</th>
+              </tr>
+            </thead>
+            <tbody>
+              {teamMembers.map((m, idx) => (
+                <tr key={idx}>
+                  <td>{m.name}</td>
+                  <td className="text-right">{m.number}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <div className="mt-10 text-[12pt]">
+            <span>Santo Domingo, República Dominicana</span>
+            <br />
+            <span>{new Date().toLocaleDateString('es-DO', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+          </div>
         </div>
       </div>
 
-      {/* PÁGINA 4: INTRODUCCIÓN Y DESARROLLO */}
+      {/* PÁGINA 3: INTRODUCCIÓN Y UBICACIÓN */}
       <div className="page-container">
-        <div className="section-header">
-          <FileText size={18} className="text-red-700" />
-          <span className="bold-title text-[12pt]">III. Introducción</span>
+        <h2 className="section-title">
+          <FileText size={18} /> III. INTRODUCCIÓN
+        </h2>
+        <div className="text-body">
+          {content.introduction}
         </div>
-        <p className="text-body mb-8">{content.introduction}</p>
+        
+        <h2 className="section-title" style={{ marginTop: '2rem' }}>
+          <MapPin size={18} /> IV. UBICACIÓN DEL CENTRO DE TRABAJO
+        </h2>
+        <div className="text-body">
+          <a href={MAP_URL} target="_blank" rel="noopener noreferrer" className="map-link">
+            El centro de trabajo auditado se encuentra ubicado en la <strong>Calle 70 C. 1ra, Santo Domingo, Distrito Nacional</strong>. La infraestructura corresponde a un edificio de uso mixto caracterizado por su fachada de color verde, donde se identificaron los puntos críticos de riesgo analizados en este reporte.
+          </a>
+        </div>
+        
+        <a href={MAP_URL} target="_blank" rel="noopener noreferrer" className="map-container block">
+          <img 
+            src="https://streetviewpixels-pa.googleapis.com/v1/thumbnail?cb_client=maps_sv.tactile&w=900&h=600&pitch=13.75&panoid=y5S4Db_rCgYyBwqpEY4fDw&yaw=158.95" 
+            className="w-full h-full object-cover"
+            alt="Ubicación Google Street View" 
+          />
+          <div className="absolute bottom-2 right-2 bg-white/90 px-2 py-1 text-[8pt] font-bold border border-slate-200 shadow-sm">Haz clic para ver en Google Maps</div>
+        </a>
 
-        <div className="section-header">
-          <Hammer size={18} className="text-red-700" />
-          <span className="bold-title text-[12pt]">IV. Desarrollo del Trabajo</span>
+        <div className="mt-auto p-4 bg-slate-50 border-l-4 border-red-700">
+           <p className="text-[10pt] font-bold uppercase text-slate-800">Coordenadas de Referencia:</p>
+           <p className="text-[10pt] italic">Latitud: 18.4927594, Longitud: -69.8812202</p>
         </div>
-        <p className="text-body">{content.development}</p>
       </div>
 
-      {/* PÁGINAS 5-10: HALLAZGOS */}
+      {/* PÁGINA 4: DESARROLLO */}
+      <div className="page-container">
+        <h2 className="section-title">
+          <ShieldAlert size={18} /> V. DESARROLLO DEL TRABAJO
+        </h2>
+        <div className="text-body">
+          {content.development}
+        </div>
+        
+        <div className="flex-grow flex items-center justify-center p-8 bg-slate-50 border border-slate-100 mt-4 rounded-lg">
+           <div className="text-center space-y-3">
+              <ShieldCheck size={40} className="mx-auto text-indigo-600" />
+              <p className="text-[11pt] font-bold uppercase tracking-widest">Metodología Aplicada</p>
+              <p className="text-[10pt] text-slate-600 italic leading-relaxed max-w-sm">
+                Inspección ocular directa, categorización técnica de riesgos laborales y registro fotográfico de evidencias críticas in situ.
+              </p>
+           </div>
+        </div>
+      </div>
+
+      {/* HALLAZGOS */}
       {riskFactors.map((risk, index) => (
         <div className="page-container" key={risk.id}>
-          <div className="section-header">
-            <AlertTriangle size={18} className="text-amber-600" />
-            <span className="bold-title text-[12pt]">Factor #{index + 1}: {risk.title}</span>
-          </div>
-
-          <div className="finding-image-container">
-            <img src={risk.image} className="finding-image" alt="Evidencia" />
-          </div>
-
-          <div className="space-y-4">
-            <div className="text-body">
-              <span className="bold-title text-[11pt] block">Explicación del Riesgo:</span>
-              {risk.whyIsDanger}
+          <h2 className="section-title">
+            <AlertTriangle size={18} /> HALLAZGO #{index + 1}
+          </h2>
+          
+          <div className="flex-grow flex flex-col">
+            <div className="bold-title text-[14pt] mb-4 text-slate-900 border-l-4 border-red-700 pl-4 uppercase">
+              {risk.title}
             </div>
             
-            <div className="text-body p-4 bg-gray-50 border-l-4 border-gray-300 italic">
-              <span className="bold-title text-[11pt] block">Impacto en el Personal:</span>
-              "{risk.anonymousExample}"
+            <div className="finding-image-box rounded shadow-sm">
+              <img src={risk.image} alt={risk.title} />
             </div>
 
-            <div className="text-body bg-black text-white p-5">
-              <span className="bold-title text-[11pt] block text-red-500 underline">Medida Sugerida:</span>
-              {risk.correctState}
-            </div>
-          </div>
+            <div className="space-y-4">
+              <div>
+                <span className="bold-title text-[11pt] flex items-center gap-2 mb-1 text-red-900 uppercase">
+                  <Zap size={14} /> Riesgo Detectado:
+                </span>
+                <p className="text-body">{risk.whyIsDanger}</p>
+              </div>
+              
+              <div>
+                <span className="bold-title text-[11pt] flex items-center gap-2 mb-1 text-amber-900 uppercase">
+                  <Zap size={14} /> Probable Consecuencia:
+                </span>
+                <p className="text-body italic bg-slate-50 p-3 rounded border-l-2 border-amber-200">
+                  {risk.anonymousExample}
+                </p>
+              </div>
 
-          <div className="footer-info">
-            <span>Factor de Riesgo {index + 1} / 6</span>
-            <span>Informe Técnico 2026</span>
+              <div className="border-t border-slate-100 pt-3">
+                <span className="bold-title text-[11pt] flex items-center gap-2 mb-1 text-indigo-900 uppercase">
+                  <ShieldCheck size={16} /> Acción Correctiva:
+                </span>
+                <p className="text-body mb-0">{risk.correctState}</p>
+              </div>
+            </div>
           </div>
         </div>
       ))}
 
-      {/* PÁGINA 11: CONCLUSIONES Y FIRMAS */}
+      {/* PÁGINA FINAL: CONCLUSIONES Y FIRMAS */}
       <div className="page-container">
-        <div className="section-header">
-          <CheckCircle2 size={18} className="text-green-700" />
-          <span className="bold-title text-[12pt]">V. Conclusiones y Recomendaciones</span>
-        </div>
-        
-        <div className="text-body p-6 border-2 border-black italic bg-gray-50 mb-6">
+        <h2 className="section-title">
+          <CheckCircle size={18} /> VI. CONCLUSIONES
+        </h2>
+        <div className="text-body">
           {content.conclusions}
         </div>
-
-        {/* Sección adicional para rellenar el espacio vacío */}
-        <div className="space-y-6 flex-grow">
-          <div className="bg-red-50 p-6 border border-red-200 rounded-sm">
-            <span className="bold-title text-[10pt] text-red-700 flex items-center gap-2 mb-2">
-              <ShieldAlert size={16} /> Nota de Prioridad Técnica
-            </span>
-            <p className="text-[10pt] text-justify leading-relaxed">
-              Basándonos en la inspección realizada, se recomienda establecer un <b>Comité Estudiantil de Seguridad</b> que vigile mensualmente el cumplimiento de las normas de canalización eléctrica y limpieza técnica. El riesgo eléctrico fue identificado como la prioridad número uno (1) debido a la antigüedad de algunas conexiones en el área norte del laboratorio.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-6">
-            <div className="border border-gray-300 p-4">
-              <span className="bold-title text-[9pt] block mb-2 underline">Normativa Aplicada</span>
-              <ul className="text-[9pt] list-disc pl-5 space-y-1">
-                <li>Reglamento 522-06 (Seguridad y Salud)</li>
-                <li>Normas ISO 45001:2018 (Gestión)</li>
-                <li>Protocolos Internos Fe y Alegría</li>
-              </ul>
-            </div>
-            <div className="border border-gray-300 p-4 flex flex-col justify-center items-center text-center">
-               <Award size={30} className="text-red-700 mb-2" />
-               <span className="bold-title text-[9pt]">Informe Validado</span>
-               <span className="text-[8pt] text-gray-500">Documento apto para revisión administrativa</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Sello de Conformidad */}
-        <div className="conformity-stamp">
-          AUDITORÍA<br/>SUPERVISADA<br/>2026<br/><b>OK</b>
-        </div>
-
-        <div className="mt-10">
+        
+        <div className="signature-area">
           <div className="text-center mb-10">
-            <span className="bold-title text-[10pt] border-b border-black pb-1">Certificación de Autoría Estudiantil</span>
+            <p className="bold-title text-[12pt] uppercase tracking-[0.2em] text-slate-950">Validación de Autoría</p>
+            <div className="w-16 h-0.5 bg-red-700 mx-auto mt-1"></div>
           </div>
-          <div className="grid grid-cols-3 gap-8">
-            {teamMembers.map(m => (
-              <div key={m.number} className="signature-line">
-                {/* Firma artística simulada */}
-                <span className="handwritten-signature">{signatures[m.name] || m.name}</span>
-                <span className="bold-title block text-[10pt]">{m.number}</span>
-                <span className="uppercase font-bold text-[8pt]">{m.name}</span>
-                <div className="mt-1 text-[7pt] italic text-gray-600">Firma del Estudiante</div>
+          
+          <div className="signature-grid">
+            {teamMembers.map((m) => (
+              <div key={m.number} className="signature-block">
+                <div className="handwritten-signature">
+                  {m.name.split(' ')[0]} {m.name.split(' ')[1] || ''}
+                </div>
+                <div className="signature-line"></div>
+                <div className="signature-name">{m.name}</div>
+                <div className="signature-id">Matrícula: {m.number}</div>
+                <div className="signature-role">Auditor de Desarrollo</div>
               </div>
             ))}
           </div>
+        </div>
+        
+        <div className="mt-auto text-center text-[9pt] text-slate-400 font-bold uppercase tracking-[0.4em]">
+           POLITÉCNICO ROSARIO TORRES - SECCIÓN 5A
+        </div>
+        
+        <div className="absolute bottom-4 right-4 text-[7pt] text-slate-300 font-bold tracking-widest">
+          INFORME TÉCNICO OFICIAL v1.0
         </div>
       </div>
     </div>
