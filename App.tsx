@@ -19,9 +19,9 @@ const img5 = new URL('./5.jpeg', import.meta.url).href;
 const img6 = new URL('./6.jpeg', import.meta.url).href;
 
 const teamMembers: TeamMember[] = [
-  { name: 'Briant Alexis', number: '#23' },
-  { name: 'Nikaury Reyes', number: '#17' },
-  { name: 'Yinariry Moreno', number: '#14' }
+  { name: 'Briant Alexis', number: '#23', number2:"3053"},
+  { name: 'Nikaury Reyes', number: '#17', number2:"3256"},
+  { name: 'Yinariry Moreno', number: '#14', number2:"3077"}
 ];
 
 const STATIC_GROUP_PHOTO = imgGrupo; 

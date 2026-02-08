@@ -292,7 +292,7 @@ const ReportPage: React.FC<ReportPageProps> = ({ teamMembers, riskFactors, conte
         <div className="flex flex-col h-full text-center">
           <div className="space-y-1 mb-10">
             <div className="bold-title text-[14pt]">Politécnico Hermana Rosario Torres Fe y Alegría</div>
-            <div className="text-[12pt]">Especialidad en Desarrollo de Aplicaciones e Informática</div>
+            <div className="text-[12pt]">Desarrollo de Aplicaciones e Informática</div>
           </div>
 
           <div className="flex-grow flex flex-col justify-center space-y-8">
@@ -324,7 +324,7 @@ const ReportPage: React.FC<ReportPageProps> = ({ teamMembers, riskFactors, conte
               {teamMembers.map((m, idx) => (
                 <tr key={idx}>
                   <td>{m.name}</td>
-                  <td className="text-right">{m.number}</td>
+                  <td className="text-right">{m.number2}</td>
                 </tr>
               ))}
             </tbody>
@@ -458,7 +458,7 @@ const ReportPage: React.FC<ReportPageProps> = ({ teamMembers, riskFactors, conte
                 </div>
                 <div className="signature-line"></div>
                 <div className="signature-name">{m.name}</div>
-                <div className="signature-id">Matrícula: {m.number}</div>
+                <div className="signature-id">Matrícula: {m.number2}</div>
                 <div className="signature-role">Auditor de Desarrollo</div>
               </div>
             ))}
